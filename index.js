@@ -24,7 +24,8 @@ const getWeatherDataPromise = (url) => {
             let result = {
                 description : description,
                 city : city,
-                temp : temp
+                temp : temp,
+                error : null
             }
             resolve(result)
         })
@@ -46,6 +47,11 @@ app.all('/', (req,res) => {
     getWeatherDataPromise(url)
     .then(data => {
         res.render('default.ejs', data)
+    })
+    .catch(error => {
+        res.render('default.ejs', {
+            error: 'Problem with getting data, try again'
+        })
     })
 })
 app.listen(3000)
